@@ -3,17 +3,15 @@
 
 {% block content %}
 
-<h1>Welcome to the Buildbot
+<h1>
 {%- if title -%}
-  &nbsp;for the&nbsp;
   {%- if title_url -%}
     <a href="{{ title_url }}">{{ title }}</a>
   {%- else -%}
     {{ title }}
   {%- endif -%}
-&nbsp;project
 {%- endif -%}
-!
+&nbsp;Buildbot
 </h1>
 
 <div class="column">
