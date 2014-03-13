@@ -29,7 +29,6 @@ docker run -d \
     -e BUILDSLAVE2_PASS=$BUILDSLAVE2_PASS \
     -p :8010:8010 \
     -p :9989:9989 \
-    -v /app:/app:rw \
     -t deis/buildbot
 
 # start two buildslaves
