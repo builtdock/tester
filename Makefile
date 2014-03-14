@@ -8,3 +8,9 @@ killall:
 clean:
 	docker rm `docker ps -a -q`
 	docker rmi `docker images -q`
+
+master_shell:
+	$(MAKE) -C master shell
+
+slave_shell:
+	$(MAKE) -C slave shell

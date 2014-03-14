@@ -10,11 +10,21 @@ RUN apt-get update && \
 # install buildbot-slave from the python package index
 RUN pip install buildbot-slave==0.8.8
 
+# install docker-in-docker dependencies
+RUN apt-get install -yqq aufs-tools iptables ca-certificates lxc
+RUN echo "deb http://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+RUN apt-get update && apt-get install -yq lxc-docker
+ADD https://raw.github.com/jpetazzo/dind/master/wrapdocker /usr/local/bin/wrapdocker
+RUN chmod +x /usr/local/bin/wrapdocker
+RUN pip install docker-py
+
 # run as non-root user "buildslave"
-RUN useradd buildslave --create-home --home-dir /app --shell /bin/bash
+RUN useradd buildslave --create-home --home-dir /app --shell /bin/bash --gid docker
 USER buildslave
 ENV HOME /app
 WORKDIR /app
 ADD . /app
 
+VOLUME /var/lib/docker
 CMD ["/app/bin/run"]

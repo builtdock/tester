@@ -29,20 +29,22 @@ docker run -d \
     -e BUILDSLAVE2_PASS=$BUILDSLAVE2_PASS \
     -p :8010:8010 \
     -p :9989:9989 \
-    -t deis/buildbot
+    -t deis/buildbot:latest
 
 # start two buildslaves
 echo_color "Starting buildslave1..."
 docker run -d \
+  --privileged \
   -e BUILDBOT_MASTER=$BUILDBOT_MASTER \
   -e BUILDSLAVE_USER=$BUILDSLAVE1_USER \
   -e BUILDSLAVE_PASS=$BUILDSLAVE1_PASS \
   -e BUILDSLAVE_ADMIN="$BUILDSLAVE_ADMIN" \
-  -t deis/buildbot-slave
+  -t deis/buildbot-slave:latest
 echo_color "Starting buildslave2..."
 docker run -d \
+  --privileged \
   -e BUILDBOT_MASTER=$BUILDBOT_MASTER \
   -e BUILDSLAVE_USER=$BUILDSLAVE2_USER \
   -e BUILDSLAVE_PASS=$BUILDSLAVE2_PASS \
   -e BUILDSLAVE_ADMIN="$BUILDSLAVE_ADMIN" \
-  -t deis/buildbot-slave
+  -t deis/buildbot-slave:latest

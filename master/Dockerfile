@@ -13,10 +13,10 @@ RUN pip install buildbot==0.8.8
 # run as non-root user "buildbot"
 RUN useradd buildbot --create-home --home-dir /app --shell /bin/bash
 USER buildbot
+ADD . /app
 ENV HOME /app
 WORKDIR /app
 RUN buildbot create-master --no-logrotate --relocatable .
-ADD . /app
 CMD ["/app/bin/run"]
 
 # expose the public HTTP site and the twisted PB API interface port
