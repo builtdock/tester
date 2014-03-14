@@ -12,6 +12,7 @@ function random_password {
 : ${BUILDBOT_HOST:=`ifconfig | grep -Eo -m 1 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`}
 : ${BUILDSLAVE_ADMIN:=Your Name Here <admin@youraddress.invalid>}
 : ${BUILDBOT_IRC_CHANNEL:=#deis}
+: ${BUILDBOT_IRC_NICKNAME:=deis-bot}
 : ${BUILDBOT_URL:=http://$BUILDBOT_HOST:8010/}
 : ${BUILDBOT_MASTER:=$BUILDBOT_HOST:9989}
 : ${REPO_PATH:=https://github.com/opdemand/deis.git}
@@ -31,6 +32,7 @@ echo_color "Starting buildbot master..."
 docker run -d \
     -e REPO_PATH=$REPO_PATH \
     -e BUILDBOT_IRC_CHANNEL=$BUILDBOT_IRC_CHANNEL \
+    -e BUILDBOT_IRC_NICKNAME=$BUILDBOT_IRC_NICKNAME \
     -e BUILDBOT_URL=$BUILDBOT_URL \
     -e BUILDSLAVE1_USER=$BUILDSLAVE1_USER \
     -e BUILDSLAVE1_PASS=$BUILDSLAVE1_PASS \
@@ -47,7 +49,7 @@ docker run -d \
     -t deis/buildbot:latest
 
 # start two buildslaves
-echo_color "Starting buildslave1..."
+echo_color "Starting slave ubuntu-1..."
 docker run -d \
   --privileged \
   -e BUILDBOT_MASTER=$BUILDBOT_MASTER \
@@ -55,7 +57,7 @@ docker run -d \
   -e BUILDSLAVE_PASS=$BUILDSLAVE1_PASS \
   -e BUILDSLAVE_ADMIN="$BUILDSLAVE_ADMIN" \
   -t deis/buildbot-slave:latest
-echo_color "Starting buildslave2..."
+echo_color "Starting slave ubuntu-2..."
 docker run -d \
   --privileged \
   -e BUILDBOT_MASTER=$BUILDBOT_MASTER \
@@ -63,7 +65,7 @@ docker run -d \
   -e BUILDSLAVE_PASS=$BUILDSLAVE2_PASS \
   -e BUILDSLAVE_ADMIN="$BUILDSLAVE_ADMIN" \
   -t deis/buildbot-slave:latest
-# echo_color "Starting buildslave3..."
+# echo_color "Starting slave debian-1..."
 # docker run -d \
 #   --privileged \
 #   -e BUILDBOT_MASTER=$BUILDBOT_MASTER \

@@ -21,5 +21,8 @@ echo `uname -a` > info/host
 # remove potentially sensitive environment vars so they're not logged
 unset -v BUILDBOT_MASTER BUILDSLAVE_USER BUILDSLAVE_PASS BUILDSLAVE_ADMIN
 
+# work around docker-in-docker permissions and quirks
+sudo $HOME/bin/wrapdocker
+
 # run buildbot-slave in the foreground
 twistd --nodaemon --no_save --python buildbot.tac
