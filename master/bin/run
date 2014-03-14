@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Run a buildbot master in the foreground. This script is intended to be run
+# inside a Docker container.
+#
+
+# run buildbot master in the foreground
+twistd --nodaemon --no_save --python buildbot.tac
