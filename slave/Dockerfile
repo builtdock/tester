@@ -19,7 +19,7 @@ RUN pip install -q docker-py
 
 # run as non-root user "buildslave"
 RUN useradd buildslave --create-home --home-dir /app --shell /bin/bash --gid docker
-RUN echo "buildslave ALL=NOPASSWD:ALL" > /etc/sudoers.d/buildslave && \
+RUN echo "buildslave ALL=NOPASSWD:/app/bin/wrapdocker" > /etc/sudoers.d/buildslave && \
     chmod 0440 /etc/sudoers.d/buildslave && \
     chmod u+s /usr/bin/sudo
 USER buildslave
