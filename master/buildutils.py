@@ -14,7 +14,7 @@ class TransferCoverageResults(DirectoryUpload):
         result = DirectoryUpload.finished(self, result)
         buildnumber = self.getProperty('buildnumber')
         coverage_index = os.path.expanduser(
-            '~/public_html/htmlcov-%d/index.html' % (buildnumber))
+            '/app/master/public_html/htmlcov-%d/index.html' % (buildnumber))
         with open(coverage_index) as coverage_file:
             m = self.report_re.search(coverage_file.read())
         self.descriptionDone = '%s test coverage' % m.group(1)
