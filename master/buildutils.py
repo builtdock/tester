@@ -8,7 +8,7 @@ from buildbot.steps.transfer import DirectoryUpload
 class TransferCoverageResults(DirectoryUpload):
 
     report_re = re.compile(
-        r"""Coverage Report:\s+<[a-z '"=_]+>(?P<coverage>\d+%)</[a-z]+>""")
+        r"""Coverage [R|r]eport:\s+<[a-z '"=_]+>(?P<coverage>\d+%)</[a-z]+>""")
 
     def finished(self, result):
         result = DirectoryUpload.finished(self, result)
