@@ -39,8 +39,23 @@ cd /app/slave
 sudo -E -u buildslave buildslave create-slave  --no-logrotate . $BUILDBOT_MASTER $BUILDSLAVE1_USER $BUILDSLAVE1_PASS
 sudo -E -u buildslave echo $BUILDSLAVE_ADMIN > info/admin
 sudo -E -u buildslave echo `uname -a` > info/host
-# run buildbot slave in the background
-HOME=/app/slave sudo -E -u buildslave twistd --no_save --python /app/slave/buildbot.tac
+# run buildbot slave in the background, removing sensitive environment variables
+env -u BUILDBOT_HOST \
+    -u BUILDBOT_IRC_CHANNEL \
+    -u BUILDBOT_IRC_NICKNAME \
+    -u BUILDBOT_MAIL_FROM_ADDR \
+    -u BUILDBOT_MAIL_RECIPIENTS \
+    -u BUILDBOT_MAIL_SMTP_PASSWORD \
+    -u BUILDBOT_MAIL_SMTP_RELAY \
+    -u BUILDBOT_MAIL_SMTP_USER \
+    -u BUILDBOT_MASTER \
+    -u BUILDBOT_PROJECT_NAME \
+    -u BUILDBOT_PROJECT_URL \
+    -u BUILDBOT_URL \
+    -u BUILDSLAVE_ADMIN \
+    -u REPO_PATH \
+    HOME=/app/slave \
+    sudo -E -u buildslave twistd --no_save --python /app/slave/buildbot.tac
 
 # set up the buildmaster environment
 export BUILDBOT_HOST BUILDBOT_IRC_CHANNEL BUILDBOT_IRC_NICKNAME \
