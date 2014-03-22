@@ -12,7 +12,7 @@ RUN apt-get update && \
 RUN curl -s https://raw.github.com/pypa/pip/1.5.4/contrib/get-pip.py | python -
 
 # install buildbot and buildbot-slave from the python package index
-RUN pip install virtualenv buildbot==0.8.8 buildbot-slave==0.8.8
+RUN pip install virtualenv==1.11.4 buildbot==0.8.8 buildbot-slave==0.8.8
 
 # install docker-in-docker dependencies
 RUN apt-get install -yqq aufs-tools iptables ca-certificates lxc
