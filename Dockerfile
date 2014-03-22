@@ -6,10 +6,13 @@ ENV DEBIAN_FRONTEND noninteractive
 # install buildbot dependencies from the Ubuntu .deb repository
 RUN apt-get update && \
     apt-get install -yq curl git-core libpq-dev libyaml-dev make python-dev \
-        python-openssl python-pip python-virtualenv
+        python-openssl
+
+# install latest pip
+RUN curl -s https://raw.github.com/pypa/pip/1.5.4/contrib/get-pip.py | python -
 
 # install buildbot and buildbot-slave from the python package index
-RUN pip install buildbot==0.8.8 buildbot-slave==0.8.8
+RUN pip install virtualenv==1.11.4 buildbot==0.8.8 buildbot-slave==0.8.8
 
 # install docker-in-docker dependencies
 RUN apt-get install -yqq aufs-tools iptables ca-certificates lxc
