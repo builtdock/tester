@@ -20,6 +20,7 @@ run:
 	    --privileged=true \
 	    --publish=:8010:8010 \
 	    --publish=:9989:9989 \
+	    --tty \
 	    deis/tester
 
 test:
