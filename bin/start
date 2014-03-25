@@ -15,8 +15,6 @@ function random_password {
 
 # set up necessary environment variables
 : ${BUILDBOT_HOST:=$(first_ipv4)}
-: ${BUILDBOT_IRC_CHANNEL:=#deis}
-: ${BUILDBOT_IRC_NICKNAME:=deis-bot}
 : ${BUILDBOT_MASTER:=$BUILDBOT_HOST:9989}
 : ${BUILDBOT_URL:=http://$BUILDBOT_HOST:8010/}
 : ${BUILDSLAVE_ADMIN:=Your Name Here <admin@youraddress.invalid>}
@@ -64,7 +62,9 @@ export BUILDSLAVE1_USER BUILDSLAVE1_PASS
 export BUILDSLAVE2_USER BUILDSLAVE2_PASS
 export BUILDSLAVE3_USER BUILDSLAVE3_PASS
 export BUILDSLAVE4_USER BUILDSLAVE4_PASS
-HOME=/app/master sudo -E -u buildmaster buildbot create-master --no-logrotate --relocatable /app/master
+env HOME=/app/master \
+  sudo -E -u buildmaster buildbot create-master \
+  --force --no-logrotate --relocatable /app/master
 
 # for now, just echo the remaining generated passwords so we can connect
 # the other buildslaves manually.

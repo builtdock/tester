@@ -1,3 +1,5 @@
+TIMEOUT=10
+
 build:
 	docker build --tag=deis/tester .
 
@@ -32,6 +34,14 @@ flake8:
 		.
 
 test: flake8
+	env -u BUILDBOT_IRC_CHANNEL \
+		-u BUILDBOT_MAIL_RECIPIENTS \
+		-u BUILDBOT_MAIL_SMTP_PASSWORD \
+		/app/bin/start
+	sleep ${TIMEOUT}
+	nc localhost 9989 -w ${TIMEOUT} | grep -F pb;
+	curl -s http://localhost:8010/ | grep Buildbot;
+	killall twistd docker
 
 shell:
 	docker run \

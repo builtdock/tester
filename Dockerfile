@@ -5,8 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # install buildbot dependencies from the Ubuntu .deb repository
 RUN apt-get update && \
-    apt-get install -yq curl git-core libpq-dev libyaml-dev make python-dev \
-        python-openssl
+    apt-get install -yq curl git-core libpq-dev libyaml-dev make psmisc \
+        python-dev python-openssl
 
 # install latest pip
 RUN curl -s https://raw.github.com/pypa/pip/1.5.4/contrib/get-pip.py | python -
@@ -17,8 +17,8 @@ RUN pip install -r /app/requirements.txt
 
 # install docker-in-docker dependencies
 RUN apt-get install -yqq aufs-tools iptables ca-certificates lxc
-RUN echo "deb http://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+RUN echo "deb http://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
 RUN apt-get update && apt-get install -yq lxc-docker
 
 # create a "buildmaster" user
