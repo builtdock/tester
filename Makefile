@@ -23,6 +23,14 @@ run:
 	    --tty \
 	    deis/tester
 
+flake8:
+	flake8 \
+		--exclude='venv/,virtualenv/' \
+		--filename='*.py,master.cfg' \
+		--max-complexity=12 \
+		--max-line-length=99 \
+		.
+
 test:
 	echo "No tests." && exit 1
 
