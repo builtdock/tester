@@ -31,8 +31,7 @@ flake8:
 		--max-line-length=99 \
 		.
 
-test:
-	echo "No tests." && exit 1
+test: flake8
 
 shell:
 	docker run \
