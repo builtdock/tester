@@ -54,9 +54,10 @@ class C2IrcStatusBot(words.IrcStatusBot):
             prefix = "%s: " % (user.split('!', 1)[0], )
         else:
             prefix = ''
-        buildbot_commands = ['commands', 'dance', 'destroy',
-            'force', 'hello', 'help', 'last', 'list', 'mute', 'notify',
-            'source', 'status', 'stop', 'unmute', 'version', 'watch']
+        buildbot_commands = [
+            'commands', 'dance', 'destroy', 'force', 'hello', 'help', 'last', 'list', 'mute',
+            'notify', 'source', 'status', 'stop', 'unmute', 'version', 'watch',
+        ]
         if any(message.startswith(cmd) for cmd in buildbot_commands):
             # Don't add buildbot commands to the brain
             return
@@ -84,10 +85,10 @@ class IRC(base.StatusReceiverMultiService):
                      "lostDelay", "failedDelay", "allowShutdown"]
 
     def __init__(self, host, nick, channels, pm_to_nicks=[], port=6667,
-            allowForce=False, categories=None, password=None, notify_events={},
-            noticeOnChannel = False, showBlameList = True, useRevisions=False,
-            useSSL=False, lostDelay=None, failedDelay=None, useColors=True,
-            allowShutdown=False):
+                 allowForce=False, categories=None, password=None, notify_events={},
+                 noticeOnChannel=False, showBlameList=True, useRevisions=False,
+                 useSSL=False, lostDelay=None, failedDelay=None, useColors=True,
+                 allowShutdown=False):
         base.StatusReceiverMultiService.__init__(self)
 
         if allowForce not in (True, False):
@@ -111,13 +112,13 @@ class IRC(base.StatusReceiverMultiService):
         self.f = C2IrcStatusFactory(self.nick, self.password,
                                     self.channels, self.pm_to_nicks,
                                     self.categories, self.notify_events,
-                                    noticeOnChannel = noticeOnChannel,
-                                    useRevisions = useRevisions,
-                                    showBlameList = showBlameList,
-                                    lostDelay = lostDelay,
-                                    failedDelay = failedDelay,
-                                    useColors = useColors,
-                                    allowShutdown = allowShutdown)
+                                    noticeOnChannel=noticeOnChannel,
+                                    useRevisions=useRevisions,
+                                    showBlameList=showBlameList,
+                                    lostDelay=lostDelay,
+                                    failedDelay=failedDelay,
+                                    useColors=useColors,
+                                    allowShutdown=allowShutdown)
 
         if useSSL:
             # SSL client needs a ClientContextFactory for some SSL mumbo-jumbo

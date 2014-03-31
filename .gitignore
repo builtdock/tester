@@ -41,3 +41,7 @@ nosetests.xml
 # Vagrant testing artifacts
 .vagrant/
 Vagrantfile
+
+# Virtualenvs for testing
+venv/
+virtualenv/

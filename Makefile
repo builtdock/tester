@@ -23,8 +23,15 @@ run:
 	    --tty \
 	    deis/tester
 
-test:
-	echo "No tests." && exit 1
+flake8:
+	flake8 \
+		--exclude='venv/,virtualenv/' \
+		--filename='*.py,master.cfg' \
+		--max-complexity=12 \
+		--max-line-length=99 \
+		.
+
+test: flake8
 
 shell:
 	docker run \
