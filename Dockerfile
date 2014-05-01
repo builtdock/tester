@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # install buildbot dependencies from the Ubuntu .deb repository
 RUN apt-get update && \
     apt-get install -yq curl git-core libpq-dev libyaml-dev make python-dev \
-        python-openssl
+        python-openssl sudo
 
 # install latest pip
 RUN curl -s https://raw.githubusercontent.com/pypa/pip/1.5.4/contrib/get-pip.py | python -
