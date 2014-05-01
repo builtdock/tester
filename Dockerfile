@@ -9,7 +9,7 @@ RUN apt-get update && \
         python-openssl
 
 # install latest pip
-RUN curl -s https://raw.github.com/pypa/pip/1.5.4/contrib/get-pip.py | python -
+RUN curl -s https://raw.githubusercontent.com/pypa/pip/1.5.4/contrib/get-pip.py | python -
 
 # install buildbot, buildbot-slave, flake8, and other python requirements
 ADD requirements.txt /app/requirements.txt
@@ -35,4 +35,3 @@ EXPOSE 8010 9989
 WORKDIR /app
 VOLUME /var/lib/docker
 CMD ["/app/bin/start"]
-
