@@ -1,8 +1,0 @@
-# python package requirements for the deis/tester CI server.
-buildbot==0.8.8
-buildbot-slave==0.8.8
-flake8==2.1.0
-mccabe==0.2.1
-pep8==1.5.1
-pyflakes==0.8.1
-virtualenv==1.11.4

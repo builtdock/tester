@@ -3,74 +3,10 @@
 # This script is designed to be run inside the container
 #
 
-# find the first non-loopback IPV4 address as a default
-function first_ipv4 {
-  echo `ifconfig | grep -Eo -m 1 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-}
-
-# generate a random 32-char password
-function random_password {
-  echo `< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32`
-}
-
-# set up necessary environment variables
-: ${BUILDBOT_HOST:=$(first_ipv4)}
-: ${BUILDBOT_IRC_CHANNEL:=#deis}
-: ${BUILDBOT_IRC_NICKNAME:=deis-bot}
-: ${BUILDBOT_MASTER:=$BUILDBOT_HOST:9989}
-: ${BUILDBOT_URL:=http://$BUILDBOT_HOST:8010/}
-: ${BUILDSLAVE_ADMIN:=Your Name Here <admin@youraddress.invalid>}
-: ${REPO_PATH:=https://github.com/opdemand/deis.git}
-BUILDSLAVE1_USER=ubuntu-1
-BUILDSLAVE1_PASS=$(random_password)
-BUILDSLAVE2_USER=debian-1
-BUILDSLAVE2_PASS=$(random_password)
-BUILDSLAVE3_USER=macosx-1
-BUILDSLAVE3_PASS=$(random_password)
-BUILDSLAVE4_USER=windows-1
-BUILDSLAVE4_PASS=$(random_password)
-export BUILDBOT_MASTER
-
 # work around docker-in-docker environment quirks
 /app/bin/wrapdocker
 
-# set up the buildslave environment
-cd /app/slave
-sudo -E -u buildslave buildslave create-slave  --no-logrotate . $BUILDBOT_MASTER $BUILDSLAVE1_USER $BUILDSLAVE1_PASS
-sudo -E -u buildslave echo $BUILDSLAVE_ADMIN > info/admin
-sudo -E -u buildslave echo `uname -a` > info/host
-# run buildbot slave in the background, removing sensitive environment variables
-env -u BUILDBOT_HOST \
-    -u BUILDBOT_IRC_CHANNEL \
-    -u BUILDBOT_IRC_NICKNAME \
-    -u BUILDBOT_MAIL_FROM_ADDR \
-    -u BUILDBOT_MAIL_RECIPIENTS \
-    -u BUILDBOT_MAIL_SMTP_PASSWORD \
-    -u BUILDBOT_MAIL_SMTP_RELAY \
-    -u BUILDBOT_MAIL_SMTP_USER \
-    -u BUILDBOT_MASTER \
-    -u BUILDBOT_PROJECT_NAME \
-    -u BUILDBOT_PROJECT_URL \
-    -u BUILDBOT_URL \
-    -u BUILDSLAVE_ADMIN \
-    -u REPO_PATH \
-    HOME=/app/slave \
-    sudo -E -u buildslave twistd --no_save --python /app/slave/buildbot.tac
-
-# set up the buildmaster environment
-export BUILDBOT_HOST BUILDBOT_IRC_CHANNEL BUILDBOT_IRC_NICKNAME \
-    BUILDBOT_URL REPO_PATH
-export BUILDSLAVE1_USER BUILDSLAVE1_PASS
-export BUILDSLAVE2_USER BUILDSLAVE2_PASS
-export BUILDSLAVE3_USER BUILDSLAVE3_PASS
-export BUILDSLAVE4_USER BUILDSLAVE4_PASS
-HOME=/app/master sudo -E -u buildmaster buildbot create-master --no-logrotate --relocatable /app/master
-
-# for now, just echo the remaining generated passwords so we can connect
-# the other buildslaves manually.
-echo "$BUILDSLAVE2_USER uses password $BUILDSLAVE2_PASS"
-echo "$BUILDSLAVE3_USER uses password $BUILDSLAVE3_PASS"
-echo "$BUILDSLAVE4_USER uses password $BUILDSLAVE4_PASS"
-# run buildbot master in the foreground
-cd /app/master
-sudo -E -u buildmaster twistd --nodaemon --no_save --python buildbot.tac
+mkdir -p /var/lib/jenkins
+chown -R jenkins /var/lib/jenkins
+exec sudo -Hu jenkins java -jar /usr/share/jenkins/jenkins.war \
+    -Djava.awt.headless=true --httpPort=8080
