@@ -1,5 +1,5 @@
 build:
-	docker build --tag=deis/tester .
+	docker build --tag=builtdock/tester .
 
 run:
 	docker run \
@@ -21,7 +21,7 @@ run:
 	    --publish=:8010:8010 \
 	    --publish=:9989:9989 \
 	    --tty \
-	    deis/tester
+	    builtdock/tester
 
 flake8:
 	flake8 \
@@ -54,10 +54,10 @@ shell:
 	    --publish=:8010:8010 \
 	    --publish=:9989:9989 \
 	    --tty \
-	    deis/tester /bin/bash
+	    builtdock/tester /bin/bash
 
 clean:
-	-docker rmi deis/tester
+	-docker rmi builtdock/tester
 
 nuke_from_orbit:
 	-docker kill `docker ps -q`
