@@ -1,5 +1,5 @@
 FROM ubuntu:12.04
-MAINTAINER Matt Boersma <matt@opdemand.com>
+MAINTAINER BuiltDock Project <info@builtdock.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
